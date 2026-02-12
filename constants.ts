@@ -11,7 +11,7 @@ export const FACADE_URL = "https://lh3.googleusercontent.com/d/1I5MAgkRxzQDt9v42
 export const CONTACT_INFO: ContactInfo = {
   phone: "+55 (11) 97368-9467",
   whatsappClean: "5511973689467",
-  email: "contato@iotembedded.com.br", // Placeholder email
+  email: "profpanizza.microcamp@gmail.com",
   addressPlaceholder: "Av. Paulista, 1000 - Bela Vista, São Paulo - SP, 01310-100" // Placeholder address
 };
 

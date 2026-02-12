@@ -3,6 +3,26 @@ import { MapPin, Phone, Mail, Send, MessageSquare } from 'lucide-react';
 import { CONTACT_INFO, WHATSAPP_NUMBER } from '../constants';
 
 const Contact: React.FC = () => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get('name') as string;
+    const phone = formData.get('phone') as string;
+    const email = formData.get('email') as string;
+    const message = formData.get('message') as string;
+
+    if (!name || !message) {
+      alert("Por favor, preencha pelo menos o nome e a mensagem.");
+      return;
+    }
+
+    const text = `*Novo Contato via Site*\n\n*Nome:* ${name}\n*Telefone:* ${phone}\n*Email:* ${email}\n*Mensagem:* ${message}`;
+    const encodedText = encodeURIComponent(text);
+    
+    // Using the same clean number format with country code 55
+    window.open(`https://wa.me/55${WHATSAPP_NUMBER}?text=${encodedText}`, '_blank');
+  };
+
   return (
     <section id="contact" className="py-24 bg-dark-900 relative border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -60,7 +80,7 @@ const Contact: React.FC = () => {
                     Realizamos atendimentos remotos para todo o Brasil. Agende uma call técnica inicial gratuita.
                 </p>
                 <a 
-                   href={`https://wa.me/${WHATSAPP_NUMBER}?text=Olá, gostaria de agendar uma consultoria online.`}
+                   href={`https://wa.me/55${WHATSAPP_NUMBER}?text=Olá, gostaria de agendar uma consultoria online.`}
                    target="_blank"
                    rel="noreferrer"
                    className="inline-block bg-brand-600 hover:bg-brand-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
@@ -73,13 +93,15 @@ const Contact: React.FC = () => {
           {/* Form */}
           <div className="glass-card p-8 rounded-2xl border border-slate-700">
             <h3 className="text-2xl font-bold text-white mb-6">Envie uma Mensagem</h3>
-            <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">Nome</label>
                   <input 
                     type="text" 
-                    id="name" 
+                    id="name"
+                    name="name" 
+                    required
                     className="w-full bg-dark-800 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors"
                     placeholder="Seu nome"
                   />
@@ -88,7 +110,8 @@ const Contact: React.FC = () => {
                   <label htmlFor="phone" className="block text-sm font-medium text-slate-300 mb-2">Telefone</label>
                   <input 
                     type="tel" 
-                    id="phone" 
+                    id="phone"
+                    name="phone" 
                     className="w-full bg-dark-800 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors"
                     placeholder="(00) 00000-0000"
                   />
@@ -100,6 +123,7 @@ const Contact: React.FC = () => {
                 <input 
                   type="email" 
                   id="email" 
+                  name="email"
                   className="w-full bg-dark-800 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors"
                   placeholder="voce@empresa.com"
                 />
@@ -109,6 +133,8 @@ const Contact: React.FC = () => {
                 <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-2">Detalhes do Projeto</label>
                 <textarea 
                   id="message" 
+                  name="message"
+                  required
                   rows={4}
                   className="w-full bg-dark-800 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors resize-none"
                   placeholder="Descreva brevemente sua necessidade..."
